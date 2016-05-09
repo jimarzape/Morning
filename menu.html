@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="css/menu.css">
+</head>
+<body>
+<div class="blue-header">
+	<img src="img/temp.png" class="logo">
+	<nav class="nav-profile">
+	<center>
+	<img src="img/user.png" class="profilelogo">
+	</center>
+	</nav>
+</div>
+<div class="menu-container">
+	<center class="center-menu">
+		<div class="divbutton-menu cart" onclick="test()">
+			<img src="img/cart.png"><br>
+			<span>Sales</span>
+		</div>
+
+		<div class="divbutton-menu reports">
+			<img src="img/report.png"><br>
+			<span>Reports</span>
+		</div>
+	</center>
+	<div id="testsd"></div>
+</div>
+<script type="text/javascript">
+	function test (argument) {
+		var formdata = new FormData();
+		formdata.append("get","");
+		var ajax = new XMLHttpRequest();
+		ajax.addEventListener("load",LoadData, false);
+		ajax.open("POST","http://192.168.43.112:8080/palimex/log.php");
+		ajax.send(formdata);
+	}
+	function LoadData(event){
+		document.getElementById('testsd').innerHTML = event.target.responseText;
+	}
+</script>
+</body>
+</html>

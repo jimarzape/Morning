@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample</title>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+<div class="blue-header"></div>
+    <center>
+        <img src="img/temp.png" class="templogo">
+        <br>
+        <input type="text" placeholder="Username" id="txtusername">
+        <br>
+        <input type="password" placeholder="Password" id="txtpassword">
+        <br>
+        <input type="button" value="Login" id="btnlogin" onclick="insertRecord()">
+        <input type="button" value="Exit" id="btnexit">
+    </center>
+    <br>
+    <div id="results"></div>
+    <br>
+    <center><img src="img/load.gif" class="loading"></center>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        $('#btnexit').click(function(){
+            window.close();
+        });
+        var table = "tbltest";
+        var create_table = "CREATE TABLE IF NOT EXISTS "+table+" (id INTEGER PRIMARY KEY AUTOINCREMENT, emails VARCHAR(50), password_ VARCHAR(50))";
+        var selectAllStatement = "SELECT * FROM "+table;
+        var deleteid = "DELETE FROM " + table + " WHERE id=?";
+        var insert = "INSERT INTO "+table+" (emails, password_) values(?,?)";
+        var db = openDatabase("AddressBook", "1.0", "Address Book", 200000); 
+        var dataset;
+        var DataType;
+        $(document).ready(function(){
+            initDatabase();
+        });
+        function initDatabase(){
+            try {
+ 
+                    if (!window.openDatabase)  // Check browser is supported SQLite or not.
+             
+                    {
+             
+                        alert('Databases are not supported in this browser.');
+             
+                    }
+             
+                    else {
+             
+                        createTable();  // If supported then call Function for create table in SQLite
+             
+                    }
+             
+                }
+             
+                catch (e) {
+             
+                    if (e == 2) {
+             
+                        // Version number mismatch. 
+             
+                        console.log("Invalid database version.");
+             
+                    } else {
+             
+                        console.log("Unknown error " + e + ".");
+             
+                    }
+             
+                    return;
+             
+                }
+ 
+        }
+        function createTable(){
+            db.transaction(function (tx) { tx.executeSql(create_table, [], showRecords, onError); });
+        }
+        function insertRecord(){
+            
+            var email = $('#txtusername').val();
+            var pass = $('#txtpassword').val();
+            if(email != "" && pass!=""){
+                // $('.loading').css("display", "block");
+                // db.transaction(function (tx) { tx.executeSql(insert, [email, pass], loadAndReset, onError); });
+                // $('.loading').css("display", "none");
+                var formdata = new FormData();
+                formdata.append("user",email);
+                formdata.append("pass",pass);
+                var ajax = new XMLHttpRequest();
+                ajax.upload.addEventListener("upload",uploadData, false);
+                ajax.addEventListener("load",LoadData, false);
+                ajax.open("POST","http://192.168.43.112:8080/palimex/log.php");
+                ajax.send(formdata);
+            }
+             else{
+                alert("Please fill up the missing field/s");
+             }
+             // window.location = "menu.html";
+
+        }
+        function uploadData(event){
+            $('.loading').css("display", "block");
+        }
+        function LoadData(event){
+            $('.loading').css("display", "none");
+            // window.location = "menu.html";
+            console.log(event.target.responseText);
+            alert(event.target.responseText);
+        }
+        function showRecords(){
+            $("#results").html('')
+ 
+            db.transaction(function (tx) {
+         
+                tx.executeSql(selectAllStatement, [], function (tx, result) {
+         
+                    dataset = result.rows;
+         
+                    for (var i = 0, item = null; i < dataset.length; i++) {
+         
+                        item = dataset.item(i);
+         
+                        var linkeditdelete = '<li>' + item['emails'] + ' , ' + item['password_'] + '    ' + '<a href="#" onclick="loadRecord(' + i + ');">edit</a>' + '    ' +
+         
+                                                    '<a href="#" onclick="deleteRecord(' + item['id'] + ');">delete</a></li>';
+         
+                        $("#results").append(linkeditdelete);
+         
+                    }
+         
+                });
+         
+            });
+        }
+        function deleteRecord(delid){
+            db.transaction(function (tx){ 
+                tx.executeSql(deleteid, [delid], showRecords(), onError);
+                resetForm();
+            });
+        }
+        function loadAndReset() //Function for Load and Reset...
+ 
+        {
+            resetForm();
+         
+            showRecords();
+        }        
+        function resetForm() // Function for reset form input values.
+ 
+        {        
+            $("#txtusername").val("");
+         
+            $("#txtpassword").val("");
+        }
+        function onError(tx, error) // Function for Hendeling Error...
+ 
+        {
+         
+            alert(error.message);
+         
+        }
+         
+    </script>
+</body>
+</html>

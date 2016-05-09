@@ -1,0 +1,65 @@
+.blue-header{
+	position: relative;
+	width: 100%;
+	height: 5em;
+	background-color: #085394;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+.logo{
+	position: relative;
+	height: 80%;
+	width: auto;
+	left: 1%;
+	top: 0.5em;
+}
+.profilelogo{
+	width: 60%;
+	height: auto;
+	position: relative;
+	top: 0.5em;
+}
+.nav-profile{
+    position: relative;
+    height: 4.5em;
+    width: 4.5em;
+    border-radius: 4em;
+    background-color: #2C88D8;
+    bottom: 4em;
+    left: 93%;
+}
+.menu-container{
+	width: 100%;
+}
+.divbutton-menu{
+	position: relative;
+	background-color: #5d5d5d;
+	width: 10em;
+	height: 10em;
+	top: 1em;
+	color: #ffffff;
+	text-align: center;
+	cursor: pointer;
+}
+.divbutton-menu img{
+    width: 60%;
+    height: auto;
+    position: relative;
+    top: 1em;
+}
+.divbutton-menu span{
+    position: relative;
+    top: 1em;
+    font-size: xx-large;
+}
+.center-menu{
+	width: 100%;
+}
+.cart{
+    right: 6em;
+}
+.reports{
+	left: 6em;
+	top: -9em;
+}
